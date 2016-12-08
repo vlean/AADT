@@ -1,0 +1,20 @@
+{
+    "name": "vlean/AADT",
+    "description": "Another Api Debug Tools",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "vlean",
+            "email": "vlean@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tools\\": "Tools"
+        }
+    },
+    "require": {
+        "workerman/workerman": "^3.3",
+        "joshcam/mysqli-database-class": "dev-master"
+    }
+}

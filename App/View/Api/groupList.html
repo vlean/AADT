@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>APIGROUP</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//cdn.bootcss.com/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+</head>
+<body>
+
+
+<div class="row">
+    <?php require('menu.html');?>
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-xs-12 col-sm-10 col-md-8">
+        <div class="page-header">
+            <h1>APIGROUP<small><span class="glyphicon glyphicon-list"></span></small></h1>
+        </div>
+
+        <?php foreach($groups as $group){ ?>
+        <div class="panel panel-info groupList"> 
+            <div class="panel-heading"><a href="/api/listApi?fid=<?php echo $group['id'];?>"> <?php echo $group['title']; ?></a>
+                <a href="/api/group?fid=<?php echo $group['id'];?>&type=addgroup" class="right"><small><span class="glyphicon glyphicon-plus"></span></small></a>
+                <a href="/api/group?fid=<?php echo $group['id'];?>&type=editgroup" class="right"><small><span class="glyphicon glyphicon-edit"></span></small></a>
+            </div>
+            <div class="panel-body">
+                <?php echo $group['desc'];?>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+    <div class="col-md-2 col-sm-1"></div>
+</div>
+
+<script src="//cdn.bootcss.com/less.js/2.3.1/less.min.js"></script>
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/static/js/art.min.js"></script>
+<script src="/static/js/api.js"></script>
+
+</body>
+</html>

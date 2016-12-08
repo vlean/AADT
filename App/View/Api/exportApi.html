@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API EDIT</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//cdn.bootcss.com/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+</head>
+<body>
+
+
+<div class="row">
+    <?php require('menu.html');?>
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-xs-12 col-sm-10 col-md-8">
+        <div class="page-header">
+            <h1>API<small><span class="glyphicon glyphicon-plus"></span></small></h1>
+        </div>
+        <form role="form" class="form-horizontal form-group-sm" action="/Api/parses" method="post">
+            <input type="hidden" name="id" value="<?php echo $id+0; ?>"/>
+            <h2 id="title"></h2>
+            <div>
+                <h3>接口信息</h3>
+                <div>
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <td class="export-label">地址:</td>
+                            <td id="url"></td>
+                        </tr>
+                        <tr>
+                            <td class="export-label">环境:</td>
+                            <td id="environment"></td>
+                        </tr>
+                        <tr>
+                            <td class="export-label">版本:</td>
+                            <td id="version"></td>
+                        </tr>
+                        <tr>
+                            <td class="export-label">描述:</td>
+                            <td id="desc"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <h3>请求参数</h3>
+                <table class="table  table-bordered table-condensed" id="params">
+                    <tr>
+                        <td>参数名称</td>
+                        <td>参数说明</td>
+                        <td>是否必填</td>
+                        <td>参数类型</td>
+                        <td>默认值</td>
+                        <td>备注</td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div>
+                <h3>返回参数</h3>
+                <table class="table" id="response">
+                </table>
+            </div>
+
+            <div>
+                <h3>错误码</h3>
+                <table class="table" id="errlist">
+                </table>
+            </div>
+
+            <!--<div class="form-group">-->
+                <!--<div class="col-sm-offset-2 col-sm-10">-->
+                    <!--<button type="submit" class="btn btn-default">提交</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        </form>
+    </div>
+    <div class="col-md-2 col-sm-1"></div>
+</div>
+
+<script id="tmp_params" type="text/html">
+    {{each data as par i}}
+    <tr>
+        <td>{{par.key}}</td>
+        <td>{{par.name}}</td>
+        <td>
+            {{if par.must==0 }}N{{/if}}
+            {{if par.must==1 }}Y{{/if}}
+        </td>
+        <td>
+            {{if par.type == 'int'}}整形{{/if}}
+            {{if par.type == 'flo'}}浮点{{/if}}
+            {{if par.type == 'str'}}字符串{{/if}}
+            {{if par.type == 'arr'}}数组{{/if}}
+            {{if par.type == 'mod'}}对象{{/if}}
+        </td>
+        <td>{{par.default}}</td>
+        <td>{{par.remark}}</td>
+    </tr>
+    {{/each}}
+</script>
+
+<script id="tmp_export_env" type="text/html">
+    {{each data as env i}}
+    <span>{{env.name}} : {{env.url}}</span><br>
+    {{/each}}
+</script>
+
+<script id="tmp_response" type="text/html">
+    {{each data as resp i}}
+    <tr class="resp_tr">
+        <input type="hidden" name="resp[pid][]" value="{{resp.pid}}" class="resp_pid" />
+        <input type="hidden" name="resp[id][]" value="{{resp.id}}" class="resp_id"/>
+        <input type="hidden" name="resp[level][]" value="{{resp.level}}" class="resp_level"/>
+        <td><span class="level">|-{{'-'.repeat(resp.level)}}</span></td>
+        <td><input type="text" class="form-control" name="resp[keys][]" placeholder="字段名称" value="{{resp.key}}"></td>
+        <td><input type="text" class="form-control" name="resp[names][]" placeholder="字段标题" value="{{resp.name}}"></td>
+        <td>
+            <select class="form-control" name="resp[musts][]">
+                <option value="0" {{if resp.must == 0}}selected{{/if}}>非必填</option>
+                <option value="1"{{if resp.must == 1}}selected{{/if}}>必填</option>
+            </select>
+        </td>
+        <td>
+            <select class="types form-control" name="resp[types][]">
+                <option value="int" {{if resp.type == 'int'}}selected{{/if}}>整形</option>
+                <option value="flo" {{if resp.type == 'flo'}}selected{{/if}}>浮点</option>
+                <option value="str" {{if resp.type == 'str'}}selected{{/if}}>字符串</option>
+                <option value="arr" {{if resp.type == 'arr'}}selected{{/if}}>数组</option>
+                <option value="mod" {{if resp.type == 'mod'}}selected{{/if}}>对象</option>
+            </select>
+        </td>
+        <td><input type="text" class="form-control" name="resp[rules][]" value="{{resp.rule}}" placeholder="规则"></td>
+        <td><input type="text" class="form-control" name="resp[remarks][]" value="{{resp.remark}}"  placeholder="说明"></td>
+        <td>
+            <a href="#" class="resp_remove add_line"><span class="glyphicon glyphicon-plus"></span></a>
+            <a href="#" class="resp_remove remove_line"><span class="glyphicon glyphicon-minus"></span></a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script id="tmp_errinfo" type="text/html">
+    {{each data as err i}}
+    <tr class="err_tr">
+        <td>
+            <div class="control-group">
+                <div class="input-group">
+                    <div class="input-group-addon">错误码</div>
+                    <input class="form-control" type="text" name="err[nos][]" value="{{err.no}}">
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="control-group">
+                <div class="input-group">
+                    <div class="input-group-addon">错误信息</div>
+                    <input class="form-control" type="text" name="err[msgs][]" value="{{err.msg}}">
+                </div>
+            </div>
+        </td>
+        <td> <a href="#" class="err_remove remove_line"><span class="glyphicon glyphicon-minus"></span></a></td>
+    </tr>
+    {{/each}}
+</script>
+
+<script src="//cdn.bootcss.com/less.js/2.3.1/less.min.js"></script>
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/static/js/art.min.js"></script>
+<script src="/static/js/api.js"></script>
+
+</body>
+</html>

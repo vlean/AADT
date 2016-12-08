@@ -1,0 +1,81 @@
+.tab-content .tab-pane {
+    padding: .8em 2em;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+table{
+    tr,td{
+        padding: 5px;
+    }
+}
+.panel-heading{
+    .navbar-link{
+        float: right;
+        color:#999;
+    }
+}
+.remove_line,.params_left,.params_right{
+    color:#999;
+}
+body{
+    overflow-x:hidden;
+}
+div#apiSelect select {
+    float: left;
+    max-width: 100px;
+    &:disabled{
+        display: none;
+    }
+}
+#environment_run{
+    max-width: 150px;
+}
+.version_remove{
+    margin:5px;
+    padding: 8px 20px;
+}
+.version_remove:hover{
+    cursor: pointer;
+    background-color: #999;
+    color:#fff;
+}
+.groupList{
+    float: left;
+    min-width: 200px;
+    margin-right: 10px;
+    .right{
+        float: right;
+        margin-left:5px;
+        color:#fff;
+        &:hover{
+            color:#999;
+        }
+    }
+}
+.run_params{
+    .run_params_label{
+        padding:0px;
+    }
+    .must{
+        color: darkred;
+    }
+    span.key{
+        display: block;
+        color: #999;
+        font-size: 0.7em;
+    }
+}
+.export-label{
+    text-align: right;
+}
+.apilist small{
+    float: right;
+    margin-left: 10px;
+}
+#apiVersion select{
+    max-width: 150px;
+}
+#version{
+    max-width: 150px;
+}
